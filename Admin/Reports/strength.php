@@ -88,33 +88,11 @@ if (!$_SESSION['Admin_Id_No']) {
         </div>
     </div>
     <?php
-    $sql = array();
-    $class = array("PreKG", "LKG", "UKG", "1 CLASS", "2 CLASS", "3 CLASS", "4 CLASS", "5 CLASS", "6 CLASS", "7 CLASS", "8 CLASS", "9 CLASS", "10 CLASS",);
-    $caste = array("OC", "BC", "SC", "ST", "Mi");
-    $gen = array("Boy", "Girl");
-    foreach ($class as $cls) {
-        foreach ($caste as $cat) {
-            foreach ($gen as $g) {
-                array_push($sql, "SELECT * FROM `student_master_data` WHERE Stu_Class = '$cls' AND Gender = '$g' AND Category = '$cat'");
-            }
-        }
-    }
-    $strength = array();
-    for ($j = 0; $j < count($sql); $j++) {
-        array_push($strength, mysqli_num_rows(mysqli_query($link, $sql[$j])));
-    }
-
-    $total = array();
-    $k = 10;
-    $b = 0;
-    for ($a = 1; $a <= 13; $a++) {
-        $sum = 0;
-        for ($b; $b < $k; $b++) {
-            $sum += $strength[$b];
-        }
-        array_push($total, $sum);
-        $k += 10;
-        $sum = 0;
+    $classes = array("PreKG", "LKG", "UKG", "1 CLASS", "2 CLASS", "3 CLASS", "4 CLASS", "5 CLASS", "6 CLASS", "7 CLASS", "8 CLASS", "9 CLASS", "10 CLASS");
+    $total = 0;
+    foreach ($classes as $class) {
+        $strength[$class] = mysqli_num_rows(mysqli_query($link, "SELECT Id_No FROM `student_master_data` WHERE Stu_Class = '$class'"));
+        $total += $strength[$class];
     }
     ?>
 
@@ -122,154 +100,22 @@ if (!$_SESSION['Admin_Id_No']) {
         <table class="table table-striped table-hover" border="1">
             <thead class="bg-secondary text-white">
                 <th>Class</th>
-                <th colspan="2" style="width: 100px;">OC</th>
-                <th colspan="2" style="width: 100px;">BC</th>
-                <th colspan="2" style="width: 100px;">SC</th>
-                <th colspan="2" style="width: 100px;">ST</th>
-                <th colspan="2" style="width: 100px;">Mi</th>
                 <th>Total</th>
             </thead>
-            <thead>
-                <th></th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Male</th>
-                <th>Female</th>
-            </thead>
-            <tr style="height: 50px;" style="height: 50px;">
-                <td>Pre KG</td>
-                <?php
-                $c = 0;
-                for ($c; $c < 10; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[0]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>LKG</td>
-                <?php
-                for ($c; $c < 20; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[1]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>UKG</td>
-                <?php
-                for ($c; $c < 30; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[2]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>1 CLASS</td>
-                <?php
-                for ($c; $c < 40; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[3]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>2 CLASS</td>
-                <?php
-                for ($c; $c < 50; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[4]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>3 CLASS</td>
-                <?php
-                for ($c; $c < 60; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[5]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>4 CLASS</td>
-                <?php
-                for ($c; $c < 70; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[6]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>5 CLASS</td>
-                <?php
-                for ($c; $c < 80; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[7]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>6 CLASS</td>
-                <?php
-                for ($c; $c < 90; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[8]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>7 CLASS</td>
-                <?php
-                for ($c; $c < 100; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[9]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>8 CLASS</td>
-                <?php
-                for ($c; $c < 110; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td style='text-align:center;'>$total[10]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>9 CLASS</td>
-                <?php
-                for ($c; $c < 120; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td>$total[11]</td>";
-                ?>
-            </tr>
-            <tr style="height: 50px;">
-                <td>10 CLASS</td>
-                <?php
-                for ($c; $c < 130; $c++) {
-                    echo "<td style='text-align:center;'>$strength[$c]</td>";
-                }
-                echo "<td>$total[12]</td>";
-                ?>
-            </tr>
+            <?php
+            foreach ($classes as $class) {
+                echo '
+                <tr style="height: 50px;" style="height: 50px;">
+                    <td>' . $class . '</td>
+                    <td>' . $strength[$class] . '</td>
+                </tr>
+                ';
+            }
+            ?>
+
             <tr>
-                <td colspan="10"></td>
-                <td>Total</td>
-                <td><?php
-                    $tot = 0;
-                    foreach ($strength as $str) {
-                        $tot += $str;
-                    }
-                    echo $tot;
-                    ?></td>
+                <td><b>Total</b></td>
+                <td><b><?php echo $total; ?></b></td>
             </tr>
         </table>
     </div>
