@@ -89,10 +89,16 @@ if (!$_SESSION['Admin_Id_No']) {
     </div>
     <?php
     $classes = array("PreKG", "LKG", "UKG", "1 CLASS", "2 CLASS", "3 CLASS", "4 CLASS", "5 CLASS", "6 CLASS", "7 CLASS", "8 CLASS", "9 CLASS", "10 CLASS");
+    $sections = array('A', 'B', 'C', 'D');
     $total = 0;
     foreach ($classes as $class) {
-        $strength[$class] = mysqli_num_rows(mysqli_query($link, "SELECT Id_No FROM `student_master_data` WHERE Stu_Class = '$class'"));
-        $total += $strength[$class];
+        foreach ($sections as $section) {
+            $rows = mysqli_num_rows(mysqli_query($link, "SELECT Id_No FROM `student_master_data` WHERE Stu_Class = '$class' AND Stu_Section = '$section'"));
+            if ($rows > 0) {
+                $strength[$class][$section] = $rows;
+                $total += $strength[$class][$section];
+            }
+        }
     }
     ?>
 
@@ -104,12 +110,16 @@ if (!$_SESSION['Admin_Id_No']) {
             </thead>
             <?php
             foreach ($classes as $class) {
-                echo '
+                foreach ($sections as $section) {
+                    if (array_key_exists($section, $strength[$class])) {
+                        echo '
                 <tr style="height: 50px;" style="height: 50px;">
-                    <td>' . $class . '</td>
-                    <td>' . $strength[$class] . '</td>
+                    <td>' . $class . ' ' . $section . '</td>
+                    <td>' . $strength[$class][$section] . '</td>
                 </tr>
                 ';
+                    }
+                }
             }
             ?>
 

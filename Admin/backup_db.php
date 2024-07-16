@@ -128,8 +128,7 @@ $tables             = "Your tables";
 
 if (isset($_POST['Backup'])) {
     //Backing Up the Full Database
-
-    $backup = Export_Database($mysqlHostName, $mysqlUserName, $mysqlPassword, $DbName,  $tables = false, "viswateja.sql");
+    $backup = Export_Database($mysqlHostName, $mysqlUserName, $mysqlPassword, $DbName,  $tables = false);
 }
 
 if (isset($_POST['Restore'])) {
