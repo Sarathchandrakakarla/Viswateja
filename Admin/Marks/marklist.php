@@ -342,8 +342,8 @@ function month($date)
                             echo '
                                         <tr>
                                             <td style = "font-size:13px;font-weight:bold;font-family:' . 'Arial' . '">' . $sub[0] . '</td>
-                                            <td style = "font-size:13px;padding-left:55px;font-weight:bold;font-family:' . 'Arial' . '">' . $marks[$id][$count] . '</td>
                                             <td style = "font-size:13px;padding-left:55px;font-weight:bold;font-family:' . 'Arial' . '">' . $sub[1] . '</td>
+                                            <td style = "font-size:13px;padding-left:55px;font-weight:bold;font-family:' . 'Arial' . '">' . $marks[$id][$count] . '</td>
                                         <tr>';
                             $count++;
                         }
@@ -532,8 +532,8 @@ function month($date)
                                     echo '
                                         <tr>
                                             <td style = "font-size:13px;font-weight:bold;font-family:' . 'Arial' . '">' . $sub[0] . '</td>
-                                            <td style = "font-size:13px;padding-left:55px;font-weight:bold;font-family:' . 'Arial' . '">' . $marks[$ids[0]][$count] . '</td>
                                             <td style = "font-size:13px;padding-left:55px;font-weight:bold;font-family:' . 'Arial' . '">' . $sub[1] . '</td>
+                                            <td style = "font-size:13px;padding-left:55px;font-weight:bold;font-family:' . 'Arial' . '">' . $marks[$id][$count] . '</td>
                                         <tr>';
                                     $count++;
                                 }
