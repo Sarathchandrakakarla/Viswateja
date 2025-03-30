@@ -418,6 +418,30 @@ if (isset($_POST['Promotion'])) {
           }
         }
       }
+      $van_drop_ids = array();
+      $van_drop_status = false;
+      $van_drop_query = mysqli_query($link, "SELECT Id_No FROM `student_master_data` WHERE Van_Route LIKE '%DROP%'");
+      if (mysqli_num_rows($van_drop_query) != 0) {
+        while ($van_drop_row = mysqli_fetch_assoc($van_drop_query)) {
+          array_push($van_drop_ids, $van_drop_row['Id_No']);
+        }
+        foreach ($van_drop_ids as $van_drop_id) {
+          $sql = mysqli_query($link, "UPDATE `student_master_data` SET Van_Route = NULL WHERE Id_No = '$van_drop_id'");
+          if ($sql) {
+            $promotion_status = true;
+            $van_drop_status = true;
+          } else {
+            break;
+            $promotion_status = false;
+            $van_drop_status = true;
+          }
+        }
+        if ($van_drop_status) {
+          echo '<script>alert("Van Drop Students Setting NULL Successful!!")</script>';
+        } else {
+          echo '<script>alert("Van Drop Students Setting NULL Failed!!")</script>';
+        }
+      }
     }
 
     /*
