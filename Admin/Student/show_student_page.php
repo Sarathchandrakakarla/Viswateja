@@ -116,7 +116,7 @@ if (isset($_POST['update'])) {
       $van = $row['Van_Route'];
       $refer = $row['Referred_By'];
       $siblings = $row['Siblings'];
-      $siblings_status = ($siblings != "" || $siblings != NULL) ? 'Yes':'No';
+      $siblings_status = ($siblings != "" || $siblings != NULL) ? 'Yes' : 'No';
       $_SESSION['Stu_Id_No'] = $stu_id;
       $_SESSION['Stu_Adm_No'] = $stu_adm;
       $_SESSION['First_Name'] = $firstname;
@@ -209,6 +209,15 @@ if (isset($_POST['delete'])) {
       display: block;
     }
   }
+
+  .btn-wrapper {
+    display: inline-flex;
+    cursor: not-allowed;
+  }
+
+  .btn-wrapper button:disabled {
+    pointer-events: none;
+  }
 </style>
 
 <body class="bg-light">
@@ -230,7 +239,12 @@ if (isset($_POST['delete'])) {
           <div class="buttons mt-3">
             <button class="btn btn-primary" type="submit" name="show">Show</button>
             <button class="btn btn-warning" type="submit" name="update">Modify</button>
-            <button class="btn btn-danger" type="submit" name="delete" onclick="if(!confirm('Confirm to Delete Student Data?')){return false;}else{return true;}">Delete</button>
+            <div class="btn-wrapper"
+              <?php if ($_SESSION['Role'] == "Admin") { ?>
+              title="You don't have permission to delete student data"
+              <?php } ?>>
+              <button class="btn btn-danger erp-btn" type="submit" name="delete" onclick="if(!confirm('Confirm to Delete Student Data?')){return false;}else{return true;}" <?php echo ($_SESSION['Role'] == "Admin") ? 'disabled' : ''; ?>><i class="bi bi-trash"></i>Delete</button>
+            </div>
           </div>
         </form>
       </div>
