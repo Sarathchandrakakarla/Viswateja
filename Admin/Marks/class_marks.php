@@ -65,7 +65,7 @@ error_reporting(0);
         }
     }
 </style>
-<!--  onload="location.replace('/Victory/test/construction.html')" -->
+<!--  onload="location.replace('/Futuregen/test/construction.html')" -->
 
 <body class="bg-light">
     <?php
@@ -140,23 +140,23 @@ error_reporting(0);
                     <th>Section</th>
                     <?php
                     if (isset($_POST['ok'])) {
-                        if($_POST['Class']){
+                        if ($_POST['Class']) {
                             $class = $_POST['Class'];
                             echo "<script>document.getElementById('class').value='$class'</script>";
-                            $s = mysqli_query($link,"SELECT * FROM `class_wise_examination` WHERE Class = '$class'");
+                            $s = mysqli_query($link, "SELECT * FROM `class_wise_examination` WHERE Class = '$class'");
                             echo "<script>document.getElementById('exam').innerHTML = '';</script>";
                             if (mysqli_num_rows($s) > 0) {
-                                echo "<script>$('#exam').html('<option value=".'selectexam'." disabled selected>--Select Exam--</option>');</script>";
+                                echo "<script>$('#exam').html('<option value=" . 'selectexam' . " disabled selected>--Select Exam--</option>');</script>";
                                 while ($r = mysqli_fetch_assoc($s)) {
-                                    echo "<script>$('#exam').append('<option value=' + '".$r['Exam']."' + '>".$r['Exam']."</option>');</script>";
+                                    echo "<script>$('#exam').append('<option value=' + '" . $r['Exam'] . "' + '>" . $r['Exam'] . "</option>');</script>";
                                 }
                             } else {
                                 echo "<script>$('#exam').html('<option selected disabled>No Exam Found</option>');</script>";
                             }
-                            if($_POST['Section']){
+                            if ($_POST['Section']) {
                                 $section = $_POST['Section'];
                                 echo "<script>$('#section').val('$section')</script>";
-                                if($_POST['Exam']){
+                                if ($_POST['Exam']) {
                                     $exam = $_POST['Exam'];
                                     echo "<script>document.getElementById('exam').value='$exam';</script>";
                                     $_SESSION['exm_Class'] = $class;
@@ -166,44 +166,44 @@ error_reporting(0);
                                     if (mysqli_num_rows($result1) == 0) {
                                         echo "<script>alert('There are No subjects corresponding to this Class and Exam');</script>";
                                     } else {
+                                        $subjects = array();
                                         while ($row1 = mysqli_fetch_assoc($result1)) {
+                                            $subjects[] = $row1;
                                             echo '
                                         <th>' . $row1['Subjects'] . '</th>';
                                         }
+                                        $subject_count = count($subjects);
                                         echo '<tbody id="tbody">';
                                         $sql = "SELECT * FROM `student_master_data` WHERE Stu_Class = '$class' AND Stu_Section = '$section'";
                                         $result = mysqli_query($link, $sql);
                                         $k = 1;
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo '<tr>
-                                        <td>' . $k . '</td>
-                                        <td>' . $row['Id_No'] . '</td>
-                                        <td>' . $row['First_Name'] . '</td>
-                                        <td>' . $exam . '</td>
-                                        <td>' . $row['Stu_Class'] . '</td>
-                                        <td>' . $row['Stu_Section'] . '</td>';
-                                            $result1 = mysqli_query($link, "SELECT * FROM `class_wise_subjects` WHERE Class = '$class' AND Exam = '$exam'");
-                                            $j = 0;
+                                            <td>' . $k . '</td>
+                                            <td>' . $row['Id_No'] . '</td>
+                                            <td>' . $row['First_Name'] . '</td>
+                                            <td>' . $exam . '</td>
+                                            <td>' . $row['Stu_Class'] . '</td>
+                                            <td>' . $row['Stu_Section'] . '</td>';
                                             $sub_count = 1;
-                                            while ($row1 = mysqli_fetch_assoc($result1)) {
-                                                $res = mysqli_query($link, "SELECT * FROM `stu_marks` WHERE Id_No = '" . $row['Id_No'] . "' AND Exam = '" . $exam . "'");
-                                                $row2 = mysqli_fetch_assoc($res);
+                                            $res = mysqli_query($link, "SELECT * FROM `stu_marks` WHERE Id_No = '" . $row['Id_No'] . "' AND Exam = '" . $exam . "'");
+                                            $row2 = mysqli_fetch_assoc($res);
+                                            foreach ($subjects as $row1) {
                                                 echo '
-                                            <td><input type="text" class="form-control mark" value="' . $row2["sub" . $sub_count] . '" name="mark[]" onfocus="this.select();" id="markinp" style="width:50px;"></td>';
+                                            <td><input type="text" class="form-control mark" data-max="' . $row1['Max_Marks'] . '" value="' . $row2["sub" . $sub_count] . '" name="mark[]" onfocus="this.select();" style="width:50px;"></td>';
                                                 $sub_count++;
-                                                $j++;
                                             }
                                             echo '</tr>';
                                             $k++;
                                         }
                                     }
-                                } else{
+                                } else {
                                     echo "<script>alert('Please Select Exam!');</script>";
                                 }
-                            } else{
+                            } else {
                                 echo "<script>alert('Please Select Section!');</script>";
                             }
-                        } else{
+                        } else {
                             echo "<script>alert('Please Select Class!');</script>";
                         }
                     }
@@ -231,12 +231,12 @@ error_reporting(0);
         document.getElementById('class').value='$cls';
         document.getElementById('section').value='$sec';
         </script>";
-        $s = mysqli_query($link,"SELECT * FROM `class_wise_examination` WHERE Class = '$cls'");
+        $s = mysqli_query($link, "SELECT * FROM `class_wise_examination` WHERE Class = '$cls'");
         echo "<script>document.getElementById('exam').innerHTML = '';</script>";
         if (mysqli_num_rows($s) > 0) {
-            echo "<script>$('#exam').html('<option value=".'selectexam'." disabled selected>--Select Exam--</option>');</script>";
+            echo "<script>$('#exam').html('<option value=" . 'selectexam' . " disabled selected>--Select Exam--</option>');</script>";
             while ($r = mysqli_fetch_assoc($s)) {
-                echo "<script>$('#exam').append('<option value=' + '".$r['Exam']."' + '>".$r['Exam']."</option>');</script>";
+                echo "<script>$('#exam').append('<option value=' + '" . $r['Exam'] . "' + '>" . $r['Exam'] . "</option>');</script>";
             }
         } else {
             echo "<script>$('#exam').html('<option selected disabled>No Exam Found</option>');</script>";
@@ -254,7 +254,6 @@ error_reporting(0);
         //Queries
         $query1 = mysqli_query($link, "SELECT * FROM `student_master_data` WHERE Stu_Class = '" . $cls . "' AND Stu_Section = '" . $sec . "'");
         $query2 = mysqli_query($link, "SELECT * FROM `class_wise_subjects` WHERE Class = '" . $cls . "' AND Exam = '" . $exm . "'");
-        $query4 = mysqli_query($link, "SELECT * FROM `stu_marks` WHERE Class = '" . $cls . "' AND Section = '" . $sec . "' AND Exam = '" . $exm . "'");
 
 
         if ($query1) {
@@ -310,66 +309,11 @@ error_reporting(0);
                         }
                     }
 
-                    //Checking If there is data of that class,section and Exam
-                    if (mysqli_num_rows($query4) != 0) {
-                        $flag = true;
-                        while ($row4 = mysqli_fetch_assoc($query4)) {
-                            if ($id == $row4['Id_No']) {
-                                $flag = true;
-                                break;
-                            } else {
-                                $flag = false;
-                            }
-                        }
-                        //If Id is not there in DB, Insert Student
-                        if (!$flag) {
+                    //Checking If there is data of that Id_No and Exam
+                    $existing = mysqli_query($link, "SELECT * FROM `stu_marks` WHERE Id_No = '" . $id . "' AND Exam = '" . $exm . "'");
 
-                            
-                            $i_sql .= "(Class,Section,Id_No,First_Name,Exam)VALUES('" . $cls . "','" . $sec . "','" . $id . "','" . $names[$id] . "','" . $exm . "');";
-                            if (mysqli_query($link, $i_sql)) {
-                                $status = true;
-                            } else {
-                                $status = false;
-                                break;
-                            }
-                            $i_sql = "INSERT INTO `stu_marks` ";
-
-                            //Checking Every Mark in local and DB and Update Data
-                            for ($c = 0; $c < count($subs); $c++) {
-                                if (($id_old_marks[$id][$c] != '') || ($id_new_marks[$id][$c] != '' && $id_old_marks[$id][$c] == '')) {
-                                    $u_sql .= "sub" . ($c + 1) . " = " . $id_new_marks[$id][$c] . "',Total = '" . $total . "' WHERE Id_No = '" . $id . "' AND Exam = '" . $exm . "';";
-                                    if (mysqli_query($link, $u_sql)) {
-                                        $status = true;
-                                    } else {
-                                        $status = false;
-                                        break;
-                                    }
-                                    $u_sql = "UPDATE `stu_marks` SET ";
-                                }
-                            }
-                            $total = 0;
-                        }
-                        //If Id is Present in DB
-                        else {
-                            //Checking every Mark in local and DB and Update data
-                            for ($c = 0; $c < count($subs); $c++) {
-                                if (($id_old_marks[$id][$c] != '') || ($id_new_marks[$id][$c] != '' && $id_old_marks[$id][$c] == '')) {
-                                    $u_sql .= "sub" . ($c + 1) . " = '" . $id_new_marks[$id][$c] . "',Total = '" . $total . "' WHERE Id_No = '" . $id . "' AND Exam = '" . $exm . "';";
-                                    if (mysqli_query($link, $u_sql)) {
-                                        $status = true;
-                                    } else {
-                                        $status = false;
-                                        break;
-                                    }
-                                    $u_sql = "UPDATE `stu_marks` SET ";
-                                }
-                            }
-                            $total = 0;
-                        }
-                    }
-                    //If there are no rows of that class,section and Exam
-                    else {
-                        //Insert the Student
+                    if (mysqli_num_rows($existing) == 0) {
+                        //Insert the Student if Id_No and Exam is not there in DB
                         $i_sql .= "(Class,Section,Id_No,First_Name,Exam)VALUES('" . $cls . "','" . $sec . "','" . $id . "','" . $names[$id] . "','" . $exm . "');";
                         if (mysqli_query($link, $i_sql)) {
                             $status = true;
@@ -382,7 +326,31 @@ error_reporting(0);
                         //Checking Every Mark in local and DB and Update Data
                         for ($c = 0; $c < count($subs); $c++) {
                             if (($id_old_marks[$id][$c] != '') || ($id_new_marks[$id][$c] != '' && $id_old_marks[$id][$c] == '')) {
-                                $u_sql .= "sub" . ($c + 1) . " = '" . $id_new_marks[$id][$c] . "',Total = '" . $total . "' WHERE Id_No = '" . $id . "' AND Exam = '" . $exm . "';";
+                                $u_sql .= "Class = '" . $cls . "',Section = '" . $sec . "',sub" . ($c + 1) . " = '" . $id_new_marks[$id][$c] . "',Total = '" . $total . "' WHERE Id_No = '" . $id . "' AND Exam = '" . $exm . "';";
+                                if (mysqli_query($link, $u_sql)) {
+                                    $status = true;
+                                } else {
+                                    $status = false;
+                                    break;
+                                }
+                                $u_sql = "UPDATE `stu_marks` SET ";
+                            }
+                        }
+                        $total = 0;
+                    } else {
+                        $u_sql .= "Class = '" . $cls . "',Section = '" . $sec . "' WHERE Id_No = '" . $id . "' AND Exam = '" . $exm . "';";
+                        if (mysqli_query($link, $u_sql)) {
+                            $status = true;
+                        } else {
+                            $status = false;
+                            break;
+                        }
+                        $u_sql = "UPDATE `stu_marks` SET ";
+
+                        //Checking every Mark in local and DB and Update data
+                        for ($c = 0; $c < count($subs); $c++) {
+                            if (($id_old_marks[$id][$c] != '') || ($id_new_marks[$id][$c] != '' && $id_old_marks[$id][$c] == '')) {
+                                $u_sql .= "Class = '" . $cls . "',Section = '" . $sec . "',sub" . ($c + 1) . " = '" . $id_new_marks[$id][$c] . "',Total = '" . $total . "' WHERE Id_No = '" . $id . "' AND Exam = '" . $exm . "';";
                                 if (mysqli_query($link, $u_sql)) {
                                     $status = true;
                                 } else {
@@ -440,20 +408,119 @@ error_reporting(0);
             })
         }
     </script>
-    <script>
-        // JavaScript code to handle down arrow key navigation
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    const focusedInput = document.activeElement;
-    const allInputs = document.querySelectorAll("#marks-table tbody tr .form-control");
-    const currentIndex = Array.from(allInputs).indexOf(focusedInput);
-    const subjectsCount = parseInt('<?php if(isset($sub_count)){echo $sub_count;} ?>')
-    const nextIndex = (currentIndex + subjectsCount-1);
-    event.preventDefault();
-    $(allInputs[nextIndex]).focus().select();
-  }
-});
 
+    <script>
+        function setMarkInputValidity(input, isValid) {
+            input.style.borderColor = isValid ? "" : "red";
+            input.style.borderWidth = isValid ? "" : "2px";
+        }
+
+        function validateMarkInput(input, showAlert = false) {
+            const rawValue = input.value.trim();
+            const maxMarks = parseFloat(input.dataset.max);
+
+            if (rawValue === "") {
+                setMarkInputValidity(input, true);
+                return {
+                    valid: true
+                };
+            }
+
+            if (rawValue === "a") {
+                input.value = "A";
+                setMarkInputValidity(input, true);
+                return {
+                    valid: true
+                };
+            }
+
+            if (rawValue === "A") {
+                setMarkInputValidity(input, true);
+                return {
+                    valid: true
+                };
+            }
+
+            if (!/^-?\d+(\.\d+)?$/.test(rawValue)) {
+                setMarkInputValidity(input, false);
+                if (showAlert) {
+                    alert("Only marks, A, or an empty value are allowed.");
+                }
+                return {
+                    valid: false
+                };
+            }
+
+            const marks = parseFloat(rawValue);
+            if (marks < 0 || marks > maxMarks) {
+                setMarkInputValidity(input, false);
+                if (showAlert) {
+                    event.preventDefault();
+                    alert("Entered marks must be between 0 and " + maxMarks + ".");
+                }
+                return {
+                    valid: false
+                };
+            }
+
+            setMarkInputValidity(input, true);
+            return {
+                valid: true
+            };
+        }
+
+        function validateAllMarkInputs(showAlert = false) {
+            const markInputs = document.querySelectorAll(".mark");
+            for (const input of markInputs) {
+                const result = validateMarkInput(input, showAlert);
+                if (!result.valid) {
+                    input.focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function validateAndConfirmUpload() {
+            if (!validateAllMarkInputs(true)) {
+                return false;
+            }
+            return confirm('Confirm to Upload Marks?');
+        }
+
+        document.addEventListener("input", function(event) {
+            if (event.target.classList.contains("mark")) {
+                validateMarkInput(event.target, false);
+            }
+        });
+
+        document.addEventListener("blur", function(event) {
+            if (event.target.classList.contains("mark")) {
+                const result = validateMarkInput(event.target, true);
+                if (!result.valid) {
+                    setTimeout(() => {
+                        event.target.focus();
+                        event.target.select();
+                    }, 0);
+                }
+            }
+        }, true);
+
+        // JavaScript code to handle down arrow key navigation
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                const focusedInput = document.activeElement;
+                const allInputs = document.querySelectorAll("#marks-table tbody tr .mark");
+                const currentIndex = Array.from(allInputs).indexOf(focusedInput);
+                const subjectsCount = parseInt('<?php echo isset($subject_count) ? $subject_count : 0; ?>');
+                if (currentIndex === -1 || subjectsCount <= 0) {
+                    return;
+                }
+                const nextIndex = (currentIndex + subjectsCount - 1);
+                event.preventDefault();
+                $(allInputs[nextIndex]).focus().select();
+            }
+        });
     </script>
 </body>
 
